@@ -2,11 +2,12 @@ package pro.javadev.common.node;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 abstract public class AbstractNode implements Node {
 
     protected final List<Node> children = new ArrayList<>();
-    protected Node parent;
+    protected       Node       parent;
 
     public AbstractNode() {
         this(null);
@@ -51,6 +52,11 @@ abstract public class AbstractNode implements Node {
     @Override
     public void add(Node node) {
         if (this != node) {
+
+            if (Objects.nonNull(find(node, Direction.UP))) {
+                throw new NodeException("CIRCULAR REFERENCE: THE CURRENT NODE IS A DESCENDANT OF THE PASSED");
+            }
+
             node.parent(this);
             this.children.add(node);
         }

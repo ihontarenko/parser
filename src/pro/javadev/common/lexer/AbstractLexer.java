@@ -2,10 +2,13 @@ package pro.javadev.common.lexer;
 
 import pro.javadev.common.token.Token;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
-public abstract class AbstractLexer extends AbstractListIterator<Token.Entry> implements Lexer<Token.Entry, Token> {
+import static java.lang.String.format;
+
+public abstract class AbstractLexer extends AbstractListIterator<Token.Entry> implements Lexer {
 
     public AbstractLexer(List<Token.Entry> entries) {
         super(entries);
@@ -20,7 +23,12 @@ public abstract class AbstractLexer extends AbstractListIterator<Token.Entry> im
 
     @Override
     public void forward(Token token) {
-        forward(entry -> entry.is(token));
+        forward(e -> e.is(token));
+    }
+
+    @Override
+    public void forward(Token.Entry entry) {
+        forward(e -> e.is(entry));
     }
 
     @Override
@@ -32,7 +40,12 @@ public abstract class AbstractLexer extends AbstractListIterator<Token.Entry> im
 
     @Override
     public void backward(Token token) {
-        backward(entry -> entry.is(token));
+        backward(e -> e.is(token));
+    }
+
+    @Override
+    public void backward(Token.Entry entry) {
+        backward(e -> e.is(entry));
     }
 
     @Override
@@ -56,33 +69,61 @@ public abstract class AbstractLexer extends AbstractListIterator<Token.Entry> im
     }
 
     @Override
-    public Token.Entry lookOver(Token start, Token end, Lexer<Token.Entry, Token> lexer) {
-        Token.Entry next  = lexer.next();
-        int         depth = 0;
+    public boolean has(int limit, int offset, Token... tokens) {
+        if (cursor + offset < 0) {
+            offset = -cursor;
+        }
 
-        do {
-            depth += (next.is(start) || next.is(end)) ? next.is(end) ? -1 : 1 : 0;
-            next = lexer.next();
-        } while (depth > 0);
+        Lexer       lexer    = lexer(offset);
+        List<Token> expected = Arrays.asList(tokens);
 
-        return next;
+        while (limit-- > 0 && lexer.hasNext()) {
+            if (expected.contains(lexer.next().token())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override
-    public Lexer<Token.Entry, Token> peeker() {
-        Lexer<Token.Entry, Token> lexer = new InnerLexer(AbstractLexer.this.entries);
+    public Token.Entry lookOver(Token start, Token end, Lexer lexer) {
+        Token.Entry result = null;
+        int         depth  = 0;
+        Token.Entry next   = lexer.next();
 
-        lexer.cursor(AbstractLexer.this.cursor);
+        while (lexer.hasNext()) {
+            if (next.is(start)) {
+                depth++;
+            }
 
-        return lexer;
-    }
+            if (next.is(end)) {
+                depth--;
+            }
 
-    static class InnerLexer extends AbstractLexer {
+            if (depth == 0) {
+                result = next;
+                break;
+            }
 
-        public InnerLexer(List<Token.Entry> entries) {
-            super(entries);
+            next = lexer.next();
         }
 
+        if (result == null) {
+            throw new LexerException(format("CANNOT FIND END FOR: %s", end));
+        }
+
+        return result;
+    }
+
+    @Override
+    public Lexer lexer(int offset) {
+        int   cursor = AbstractLexer.this.cursor;
+        Lexer lexer  = new AbstractLexer(AbstractLexer.this.entries) {};
+
+        lexer.cursor(cursor + offset);
+
+        return lexer;
     }
 
 }

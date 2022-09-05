@@ -1,6 +1,4 @@
-package pro.javadev.json.token;
-
-import pro.javadev.common.Expression;
+package pro.javadev.common;
 
 import java.util.regex.Pattern;
 

@@ -51,7 +51,7 @@ public abstract class AbstractListIterator<T> implements ListIterator<T>, Iterab
 
     @Override
     public Iterator<T> iterator() {
-        return entries.iterator();
+        return this;
     }
 
     @Override

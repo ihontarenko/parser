@@ -1,8 +1,6 @@
-package pro.javadev.json.token;
+package pro.javadev.common.token;
 
-import pro.javadev.common.token.Token;
-
-public enum JSONToken implements Token {
+public enum DefaultToken implements Token {
 
     T_UNKNOWN(1),
 
@@ -54,11 +52,11 @@ public enum JSONToken implements Token {
     private final int      type;
     private final String[] values;
 
-    JSONToken(final int type) {
+    DefaultToken(final int type) {
         this(type, new String[0]);
     }
 
-    JSONToken(final int type, final String... values) {
+    DefaultToken(final int type, final String... values) {
         this.type = type;
         this.values = values;
     }
@@ -74,7 +72,7 @@ public enum JSONToken implements Token {
     }
 
     @Override
-    public JSONToken[] tokens() {
+    public DefaultToken[] tokens() {
         return values();
     }
 

@@ -24,6 +24,18 @@ public interface Token {
 
         boolean is(Entry entry);
 
+        static Entry of(final Token token, final String value, final int position, final int ordinal) {
+            return new EntryImplementation(token, value, position, ordinal);
+        }
+
+        static Entry of(final Token token, final String value, final int position) {
+            return new EntryImplementation(token, value, position, -1);
+        }
+
+        static Entry of(final Token token, final String value) {
+            return new EntryImplementation(token, value, -1, -1);
+        }
+
     }
 
     class EntryImplementation implements Entry {
@@ -77,7 +89,7 @@ public interface Token {
 
         @Override
         public int hashCode() {
-            return Objects.hash(token);
+            return Objects.hash(token, value);
         }
 
         @Override
@@ -92,7 +104,6 @@ public interface Token {
 
             boolean[] equals = new boolean[] {
                     Objects.equals(((Entry)that).value(), this.value),
-                    Objects.equals(((Entry)that).position(), this.position),
                     Objects.equals(((Entry)that).token(), this.token)
             };
 
