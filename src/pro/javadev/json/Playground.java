@@ -2,7 +2,7 @@ package pro.javadev.json;
 
 import pro.javadev.common.token.DefaultTokenizer;
 import pro.javadev.common.Regexps;
-import pro.javadev.common.TokenizerExpression;
+import pro.javadev.common.token.TokenizerPattern;
 import pro.javadev.common.lexer.Lexer;
 import pro.javadev.common.recognizer.Recognizer;
 import pro.javadev.common.token.Token;
@@ -10,7 +10,6 @@ import pro.javadev.json.ast.JSONNode;
 import pro.javadev.json.lexer.JSONLexer;
 import pro.javadev.json.token.*;
 import pro.javadev.common.recognizer.JavaTypeTokenRecognizer;
-import pro.javadev.common.recognizer.NativeTokenRecognizer;
 
 import java.util.Optional;
 
@@ -22,9 +21,9 @@ public class Playground {
 
         DefaultTokenizer tokenizer = new DefaultTokenizer();
 
-        tokenizer.with(new NativeTokenRecognizer());
-        tokenizer.with(new JavaTypeTokenRecognizer());
-        tokenizer.with(new Recognizer<Token, String>() {
+//        tokenizer.with(new EnumTokenRecognizer(tokens));
+        tokenizer.configure(new JavaTypeTokenRecognizer());
+        tokenizer.configure(new Recognizer<Token, String>() {
             @Override
             public Optional<Token> recognize(String subject) {
                 switch (subject) {
@@ -41,11 +40,11 @@ public class Playground {
             }
         });
 
-        tokenizer.with(new TokenizerExpression(Regexps.R_QUOTED_STRING_1.expression(), 100));
-        tokenizer.with(new TokenizerExpression(Regexps.R_NUMBER.expression(), 200));
-        tokenizer.with(new TokenizerExpression(Regexps.R_IDENTIFIER.expression(), 200));
-        tokenizer.with(new TokenizerExpression(Regexps.R_SPECIAL_SYMBOLS.expression(), 300));
-        tokenizer.with(new TokenizerExpression("@\\w+", 150));
+        tokenizer.configure(new TokenizerPattern(Regexps.R_QUOTED_STRING_1.expression(), 100));
+        tokenizer.configure(new TokenizerPattern(Regexps.R_NUMBER.expression(), 200));
+        tokenizer.configure(new TokenizerPattern(Regexps.R_IDENTIFIER.expression(), 200));
+        tokenizer.configure(new TokenizerPattern(Regexps.R_SPECIAL_SYMBOLS.expression(), 300));
+        tokenizer.configure(new TokenizerPattern("@\\w+", 150));
 
         String json = "START 1, 2.5 100 (A, B, (C (d) +1)  FIN{\n" +
                 "    \"glossary\": {\n" +

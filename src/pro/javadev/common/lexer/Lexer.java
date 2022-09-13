@@ -57,6 +57,18 @@ public interface Lexer extends ListIterator<Token.Entry>, Iterable<Token.Entry> 
         return has(1, -1, tokens);
     }
 
+    default boolean hasSequence(Token... tokens) {
+        for (Token token : tokens) {
+            if (hasNext(token)) {
+                next();
+            } else {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     default Token.Entry lookOver(Token start, Token end) {
         return lookOver(start, end, lexer());
     }

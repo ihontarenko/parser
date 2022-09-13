@@ -40,14 +40,11 @@ public enum DefaultToken implements Token {
     T_INT(4000),
     T_FLOAT(5000),
 
-    T_FALSE(9000),
-    T_TRUE(9001),
-    T_NULL(9999),
+    T_FALSE(9000, "FALSE"),
+    T_TRUE(9001, "TRUE"),
+    T_NULL(9999, "NULL"),
 
-    T_IDENTIFIER(7000),
-
-    T_AND(8010, "AND"),
-    T_OR(8020, "OR");
+    T_IDENTIFIER(7000);
 
     private final int      type;
     private final String[] values;

@@ -1,15 +1,13 @@
 package pro.javadev.sql;
 
-import pro.javadev.common.Regexps;
-import pro.javadev.common.TokenizerExpression;
 import pro.javadev.common.lexer.Lexer;
+import pro.javadev.common.node.EntryNode;
 import pro.javadev.common.node.Node;
-import pro.javadev.common.recognizer.JavaTypeTokenRecognizer;
-import pro.javadev.common.recognizer.NativeTokenRecognizer;
+import pro.javadev.common.parser.LiteralParser;
+import pro.javadev.common.parser.Parser;
+import pro.javadev.common.parser.ParserContext;
 import pro.javadev.common.token.DefaultTokenizer;
-import pro.javadev.common.token.Token.Entry;
-import pro.javadev.sql.ast.SQLNode;
-import pro.javadev.sql.recognizer.SQLRecognizer;
+import pro.javadev.common.token.Token;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -20,44 +18,31 @@ import java.util.Objects;
 public class Play {
 
     public static void main(String[] args) {
+        String           sql       = getSQLString();
+        ParserContext    context   = ParserContext.CONTEXT;
         DefaultTokenizer tokenizer = new DefaultTokenizer();
 
-        tokenizer.with(new JavaTypeTokenRecognizer());
-        tokenizer.with(new NativeTokenRecognizer());
-        tokenizer.with(new TokenizerExpression(Regexps.R_QUOTED_STRING_1.expression(), 100));
-        tokenizer.with(new TokenizerExpression(Regexps.R_NUMBER.expression(), 200));
-        tokenizer.with(new TokenizerExpression(Regexps.R_IDENTIFIER.expression(), 300));
-        tokenizer.with(new TokenizerExpression(Regexps.R_SPECIAL_SYMBOLS.expression(), 400));
-        tokenizer.with(new SQLRecognizer());
+        new SQLTokenizerConfigurator().configure(tokenizer);
+        new SQLParserContextConfigurator().configure(context);
 
-        String sql   = getSQLString();
-        Lexer  lexer = new SQLLexer(tokenizer.tokenize(sql));
+        Lexer  lexer  = new SQLLexer(tokenizer.tokenize(sql));
+        Node   root   = new EntryNode(lexer.current());
+        Parser parser = context.getParser(LiteralParser.class);
 
-        for (Entry entry : lexer) {
+        System.out.println(parser.isMath(lexer));
+
+        for (Token.Entry entry : lexer) {
             System.out.println(entry);
         }
 
-        Node node0 = new SQLNode("a", null);
-        Node node1 = new SQLNode("b", null);
-        Node node2 = new SQLNode("c", null);
-        Node node3 = new SQLNode("d", null);
-
-        node0.add(node1);
-
-        node1.add(node2);
-        node1.add(node3);
-
-        node2.add(node3);
-        node1.add(node3);
-
-        node3.add(node1);
+        root.execute(System.out::println);
     }
 
     public static String getSQLString() {
         String sql = null;
 
         try {
-            sql = Files.readString(Paths.get(Objects.requireNonNull(Play.class.getResource("/delete.sql")).toURI()));
+            sql = Files.readString(Paths.get(Objects.requireNonNull(Play.class.getResource("/condition.txt")).toURI()));
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }

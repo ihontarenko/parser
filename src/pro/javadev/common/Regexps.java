@@ -11,7 +11,8 @@ public enum Regexps {
     R_LOGICAL_OPERATOR_2("[><!=]+=?"),
     R_NUMBER("[.]?\\d+[.]?\\d*"),
     R_INT("\\d+"),
-    R_FLOAT("\\d*\\.\\d*"),
+    R_FLOAT_1("\\d*\\.\\d*"),
+    R_FLOAT_2("[+-]?\\d+(\\.\\d+)?([Ee][+-]?\\d+)?"),
     R_IDENTIFIER("\\w+"),
     R_SPECIAL_SYMBOLS("\\S+?");
 

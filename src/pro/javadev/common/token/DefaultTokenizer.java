@@ -1,8 +1,7 @@
 package pro.javadev.common.token;
 
-import pro.javadev.common.Expression;
+import pro.javadev.common.Pattern;
 import pro.javadev.common.PriorityComparator;
-import pro.javadev.common.TokenizerException;
 import pro.javadev.common.recognizer.Recognizer;
 import pro.javadev.common.token.Token.Entry;
 
@@ -17,10 +16,10 @@ import java.util.stream.Collectors;
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
 import static java.util.regex.Pattern.compile;
 
-public class DefaultTokenizer implements pro.javadev.common.token.Tokenizer<Recognizer<Token, String>, Expression<String>> {
+public class DefaultTokenizer implements Tokenizer {
 
     private static final int                             COMPILER_FLAGS = CASE_INSENSITIVE;
-    private final        List<Expression<String>>        expressions;
+    private final        List<Pattern<String>>           expressions;
     private final        List<Recognizer<Token, String>> recognizers;
 
     public DefaultTokenizer() {
@@ -35,7 +34,7 @@ public class DefaultTokenizer implements pro.javadev.common.token.Tokenizer<Reco
 
         Collector<CharSequence, ?, String> collector  = Collectors.joining("|");
         List<Entry>                        tokens     = new ArrayList<>();
-        String                             expression = "(" + expressions.stream().map(Expression::expression).collect(collector) + ")";
+        String                             expression = "(" + expressions.stream().map(Pattern::pattern).collect(collector) + ")";
         Matcher                            matcher    = compile(expression, COMPILER_FLAGS).matcher(sequence);
         int                                ordinal    = 0;
 
@@ -64,12 +63,12 @@ public class DefaultTokenizer implements pro.javadev.common.token.Tokenizer<Reco
     }
 
     @Override
-    public void with(Expression<String> expression) {
+    public void configure(Pattern<String> expression) {
         this.expressions.add(expression);
     }
 
     @Override
-    public void with(Recognizer<Token, String> recognizer) {
+    public void configure(Recognizer<Token, String> recognizer) {
         this.recognizers.add(recognizer);
     }
 

@@ -1,4 +1,4 @@
-package pro.javadev.common;
+package pro.javadev.common.token;
 
 public class TokenizerException extends Error {
 

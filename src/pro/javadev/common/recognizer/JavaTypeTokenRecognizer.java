@@ -22,7 +22,7 @@ public class JavaTypeTokenRecognizer extends AbstractRecognizer<Token, String> {
         this.recognizers = new ArrayList<>() {{
             add(new PatternTokenRecognizer(R_QUOTED_STRING_1.expression(), T_STRING, 100));
             add(new PatternTokenRecognizer(R_QUOTED_STRING_2.expression(), T_STRING, 150));
-            add(new PatternTokenRecognizer(R_FLOAT.expression(), T_FLOAT, 500));
+            add(new PatternTokenRecognizer(R_FLOAT_1.expression(), T_FLOAT, 500));
             add(new PatternTokenRecognizer(R_INT.expression(), T_INT, 600));
             add(new PatternTokenRecognizer(R_IDENTIFIER.expression(), T_IDENTIFIER, 700));
         }};
