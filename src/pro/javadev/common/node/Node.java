@@ -3,12 +3,10 @@ package pro.javadev.common.node;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import static pro.javadev.common.node.Node.Direction.DOWN;
-import static pro.javadev.common.node.Node.Direction.UP;
+import static pro.javadev.common.node.Node.Order.*;
 
 @SuppressWarnings({"unused"})
 public interface Node {
@@ -56,25 +54,25 @@ public interface Node {
     }
 
     default Node find(Node node) {
-        return find(node, DOWN);
+        return find(node, DESC);
     }
 
-    default Node find(Node node, Direction direction) {
+    default Node find(Node node, Order direction) {
         Node result = null;
 
         if (!this.equals(node)) {
             switch (direction) {
-                case UP:
+                case ASC:
                     if (!isRoot()) {
                         Node parent = parent();
                         if (parent.equals(node)) {
                             result = parent;
                         } else {
-                            result = parent.find(node, UP);
+                            result = parent.find(node, ASC);
                         }
                     }
                     break;
-                case DOWN:
+                case DESC:
                     if (hasChildren()) {
                         for (Node child : children()) {
                             if ((result = child.equals(node) ? child : child.find(node)) != null) {
@@ -101,6 +99,6 @@ public interface Node {
         }
     }
 
-    enum Direction {DOWN, UP}
+    enum Order {DESC, ASC}
 
 }

@@ -56,7 +56,7 @@ public class DefaultTokenizer implements Tokenizer {
                 value = value.substring(1, value.length() - 1);
             }
 
-            tokens.add(Entry.of(token.get(), value, position, ++ordinal));
+            tokens.add(entry(token.get(), value, position, ++ordinal));
         }
 
         return tokens;

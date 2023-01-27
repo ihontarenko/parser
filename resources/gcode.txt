@@ -1,0 +1,24 @@
+G00 X5 Y5                ; point B
+G01 X0 Y20 F200          ; point C
+G01 X20 Y0               ;a
+G02 X10 Y-10 I0 J-10     ; point E
+G02 X-4 Y-8 I-10 J0      ; point F
+G01 X-26 Y-2             ; point B
+
+O1000
+T1 M6
+G0 G90 G40 G21 G17 G94 G80
+G54 X-75 Y-25 S500 M3  (Start Point)
+G43 Z100 H1
+Z5
+G1 Z-20 F100
+X-50 M8               (Position 1)
+Y0                    (Position 2)
+X0 Y50                (Position 3)
+X50 Y0                (Position 4)
+X0 Y-50               (Position 5)
+X-50 Y0               (Position 6)
+Y25                   (Position 7)
+X-75                  (Position 8)
+G0 Z100
+M30

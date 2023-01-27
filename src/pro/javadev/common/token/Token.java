@@ -36,6 +36,10 @@ public interface Token {
             return new EntryImplementation(token, value, -1, -1);
         }
 
+        static Entry of(final Entry entry) {
+            return new EntryImplementation(entry.token(), entry.value(), entry.position(), entry.ordinal());
+        }
+
     }
 
     class EntryImplementation implements Entry {

@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-public abstract class AbstractListIterator<T> implements ListIterator<T>, Iterable<T> {
+public abstract class ImmutableListIterator<T> implements ListIterator<T>, Iterable<T> {
 
     private final static UnsupportedOperationException UNSUPPORTED_OPERATION_EXCEPTION
             = new UnsupportedOperationException("LIST ITERATOR IS IMMUTABLE");
@@ -14,7 +14,7 @@ public abstract class AbstractListIterator<T> implements ListIterator<T>, Iterab
     protected final int     length;
     protected       int     cursor;
 
-    public AbstractListIterator(List<T> entries) {
+    public ImmutableListIterator(List<T> entries) {
         this.length = entries.size();
         this.entries = Collections.unmodifiableList(entries);
     }

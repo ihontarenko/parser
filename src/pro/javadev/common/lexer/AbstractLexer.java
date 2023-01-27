@@ -8,7 +8,7 @@ import java.util.function.Predicate;
 
 import static java.lang.String.format;
 
-public abstract class AbstractLexer extends AbstractListIterator<Token.Entry> implements Lexer {
+public abstract class AbstractLexer extends ImmutableListIterator<Token.Entry> implements Lexer {
 
     public AbstractLexer(List<Token.Entry> entries) {
         super(entries);

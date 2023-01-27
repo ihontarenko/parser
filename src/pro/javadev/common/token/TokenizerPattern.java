@@ -2,13 +2,15 @@ package pro.javadev.common.token;
 
 import pro.javadev.common.Pattern;
 
+import static java.util.regex.Pattern.compile;
+
 public class TokenizerPattern implements Pattern<String> {
 
     protected final int                     priority;
     protected final java.util.regex.Pattern pattern;
 
     public TokenizerPattern(String expression, int priority) {
-        this.pattern = java.util.regex.Pattern.compile(expression);
+        this.pattern = compile(expression);
         this.priority = priority;
     }
 

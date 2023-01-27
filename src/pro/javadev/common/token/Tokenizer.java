@@ -11,4 +11,9 @@ public interface Tokenizer {
     void configure(Pattern<String> expression);
 
     void configure(Recognizer<Token, String> recognizer);
+
+    default Token.Entry entry(Token token, String value, final int position, final int ordinal) {
+        return Token.Entry.of(token, value, position, ordinal);
+    }
+
 }
