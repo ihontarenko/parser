@@ -33,7 +33,7 @@ public class TokenRecognizerDecorator extends AbstractRecognizer<Token, String> 
         Optional<Token>                     token    = Optional.empty();
         Iterator<Recognizer<Token, String>> iterator = recognizers.iterator();
 
-        while (iterator.hasNext() && !token.isPresent()) {
+        while (iterator.hasNext() && token.isEmpty()) {
             token = iterator.next().recognize(piece);
         }
 

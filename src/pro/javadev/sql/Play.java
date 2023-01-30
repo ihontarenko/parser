@@ -7,7 +7,6 @@ import pro.javadev.common.parser.LiteralParser;
 import pro.javadev.common.parser.Parser;
 import pro.javadev.common.parser.ParserContext;
 import pro.javadev.common.token.DefaultTokenizer;
-import pro.javadev.common.token.Token;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -29,11 +28,11 @@ public class Play {
         Node   root   = new EntryNode(lexer.current());
         Parser parser = context.getParser(LiteralParser.class);
 
-        System.out.println(parser.isMath(lexer));
+        parser.parse(lexer, root, context);
 
-        for (Token.Entry entry : lexer) {
-            System.out.println(entry);
-        }
+        System.out.println(parser.isFieldPath(lexer));
+
+//        lexer.forEach(System.out::println);
 
         root.execute(System.out::println);
     }
@@ -42,7 +41,7 @@ public class Play {
         String sql = null;
 
         try {
-            sql = Files.readString(Paths.get(Objects.requireNonNull(Play.class.getResource("/condition.txt")).toURI()));
+            sql = Files.readString(Paths.get(Objects.requireNonNull(Play.class.getResource("/select.sql")).toURI()));
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }

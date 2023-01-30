@@ -69,4 +69,8 @@ public abstract class ImmutableListIterator<T> implements ListIterator<T>, Itera
         throw UNSUPPORTED_OPERATION_EXCEPTION;
     }
 
+    @Override
+    public String toString() {
+        return String.format("ImmutableListIterator{length=%d, cursor=%d}", length, cursor);
+    }
 }

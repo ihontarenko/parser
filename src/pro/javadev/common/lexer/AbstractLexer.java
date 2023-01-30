@@ -69,7 +69,7 @@ public abstract class AbstractLexer extends ImmutableListIterator<Token.Entry> i
     }
 
     @Override
-    public boolean has(int limit, int offset, Token... tokens) {
+    public boolean is(int limit, int offset, Token... tokens) {
         if (cursor + offset < 0) {
             offset = -cursor;
         }
@@ -87,7 +87,8 @@ public abstract class AbstractLexer extends ImmutableListIterator<Token.Entry> i
     }
 
     @Override
-    public Token.Entry lookOver(Token start, Token end, Lexer lexer) {
+    public Token.Entry lookOver(Token start, Token end) {
+        Lexer       lexer  = lexer();
         Token.Entry result = null;
         int         depth  = 0;
         Token.Entry next   = lexer.next();

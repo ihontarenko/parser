@@ -15,7 +15,7 @@ public interface Lexer extends ListIterator<Token.Entry>, Iterable<Token.Entry> 
 
     void cursor(int cursor);
 
-    Token.Entry lookOver(Token start, Token end, Lexer lexer);
+    Token.Entry lookOver(Token start, Token end);
 
     void forward(Predicate<Token.Entry> predicate);
 
@@ -31,7 +31,7 @@ public interface Lexer extends ListIterator<Token.Entry>, Iterable<Token.Entry> 
 
     Lexer lexer(int increase);
 
-    boolean has(int limit, int offset, Token... tokens);
+    boolean is(int limit, int offset, Token... tokens);
 
     default void forward(Token token, String value) {
         forward(Token.Entry.of(token, value));
@@ -41,36 +41,34 @@ public interface Lexer extends ListIterator<Token.Entry>, Iterable<Token.Entry> 
         backward(Token.Entry.of(token, value));
     }
 
-    default boolean hasCurrent(Token... tokens) {
-        return has(1, tokens);
+    default boolean is(int limit, Token... tokens) {
+        return is(limit, 0, tokens);
     }
 
-    default boolean has(int limit, Token... tokens) {
-        return has(limit, 0, tokens);
+    default boolean isCurrent(Token... tokens) {
+        return is(1, tokens);
     }
 
-    default boolean hasNext(Token... tokens) {
-        return has(1, 1, tokens);
+    default boolean isNext(Token... tokens) {
+        return is(1, 1, tokens);
     }
 
-    default boolean hasPrevious(Token... tokens) {
-        return has(1, -1, tokens);
+    default boolean isPrevious(Token... tokens) {
+        return is(1, -1, tokens);
     }
 
     default boolean hasSequence(Token... tokens) {
+        Lexer lexer = lexer();
+
         for (Token token : tokens) {
-            if (hasNext(token)) {
-                next();
+            if (lexer.isNext(token)) {
+                lexer.next();
             } else {
                 return false;
             }
         }
 
         return true;
-    }
-
-    default Token.Entry lookOver(Token start, Token end) {
-        return lookOver(start, end, lexer());
     }
 
     default Lexer lexer() {
