@@ -1,4 +1,4 @@
-SELECT a.* as all, DISTINCTROW SQL_SMALL_RESULT SQL_NO_CACHE (1 - 2.0) + 3 + 4 * 5 * 6 + 7 * 8 + 1 / 2 - 3 + 7                      AS test,
+SELECT a.test as all, DISTINCTROW SQL_SMALL_RESULT SQL_NO_CACHE (1 - 2.0) + 3 + 4 * 5 * 6 + 7 * 8 + 1 / 2 - 3 + 7                      AS test,
                                                  user.id + 2 + t0.name                                                AS lala,
                                                  COUNT(user_id),
                                                  PI()                                                                 AS pi,

@@ -32,7 +32,7 @@ public class EntryNode extends AbstractNode {
 
     @Override
     public String toString() {
-        return format("NODE V:[%s] T[%s] [%s]", entry.value(), entry.token(), properties);
+        return format("NODE V:[%s] T[%s]", entry, properties);
     }
 
 }

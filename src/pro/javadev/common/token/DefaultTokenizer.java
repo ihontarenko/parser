@@ -10,7 +10,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
@@ -32,11 +31,11 @@ public class DefaultTokenizer implements Tokenizer {
         ensureExpressions();
         ensureRecognizers();
 
-        Collector<CharSequence, ?, String> collector  = Collectors.joining("|");
-        List<Entry>                        tokens     = new ArrayList<>();
-        String                             expression = "(" + expressions.stream().map(Pattern::pattern).collect(collector) + ")";
-        Matcher                            matcher    = compile(expression, COMPILER_FLAGS).matcher(sequence);
-        int                                ordinal    = 0;
+        var         collector  = Collectors.joining("|");
+        List<Entry> tokens     = new ArrayList<>();
+        String      expression = "(" + expressions.stream().map(Pattern::pattern).collect(collector) + ")";
+        Matcher     matcher    = compile(expression, COMPILER_FLAGS).matcher(sequence);
+        int         ordinal    = 0;
 
         while (matcher.find()) {
             String                              value    = matcher.group(1);

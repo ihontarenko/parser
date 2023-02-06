@@ -6,7 +6,9 @@ import pro.javadev.common.node.Node;
 import pro.javadev.common.parser.LiteralParser;
 import pro.javadev.common.parser.Parser;
 import pro.javadev.common.parser.ParserContext;
+import pro.javadev.common.token.DefaultToken;
 import pro.javadev.common.token.DefaultTokenizer;
+import pro.javadev.sql.parser.FieldPathParser;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -26,7 +28,9 @@ public class Play {
 
         Lexer  lexer  = new SQLLexer(tokenizer.tokenize(sql));
         Node   root   = new EntryNode(lexer.current());
-        Parser parser = context.getParser(LiteralParser.class);
+        Parser parser = context.getParser(FieldPathParser.class);
+
+//        lexer.forward(DefaultToken.T_IDENTIFIER);
 
         parser.parse(lexer, root, context);
 

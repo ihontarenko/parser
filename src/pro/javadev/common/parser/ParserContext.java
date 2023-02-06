@@ -22,6 +22,10 @@ public interface ParserContext {
 
         @Override
         public Parser getParser(Class<? extends Parser> type) {
+            if (!parsers.containsKey(type)) {
+                throw new ParserException(String.format("NO '%s' FOUND", type.getSimpleName()));
+            }
+
             return parsers.get(type);
         }
 
