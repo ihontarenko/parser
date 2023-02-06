@@ -30,9 +30,9 @@ public class Play {
 
         parser.parse(lexer, root, context);
 
-        System.out.println(parser.isFieldPath(lexer));
+        lexer.forEach(System.out::println);
 
-//        lexer.forEach(System.out::println);
+        System.out.println(lexer.length());
 
         root.execute(System.out::println);
     }

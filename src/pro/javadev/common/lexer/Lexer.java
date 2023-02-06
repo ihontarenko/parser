@@ -57,7 +57,7 @@ public interface Lexer extends ListIterator<Token.Entry>, Iterable<Token.Entry> 
         return is(1, -1, tokens);
     }
 
-    default boolean hasSequence(Token... tokens) {
+    default boolean sequence(Token... tokens) {
         Lexer lexer = lexer();
 
         for (Token token : tokens) {
